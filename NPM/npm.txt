@@ -1,0 +1,18 @@
+npm (Node Package Manager)
+npm is a package manager for JavaScript that allows you to install, share, and manage dependencies (libraries and tools) for your projects.
+You can use npm to install packages globally (available across all projects) or locally (available only within a specific project).
+npx
+
+npx is a tool that comes with npm (version 5.2.0 and higher) and allows you to execute npm packages without needing to install them globally. It's useful for running one-off commands.
+Global Installation
+Global Installation means installing a package so that it can be used from the command line anywhere on your system.
+bash
+npm install -g package-name
+Example: npm install -g create-react-app
+
+
+Local Installation
+Local Installation means installing a package only for the current project. The package will be placed in the node_modules directory of your project.
+bash
+npm install package-name
+Example: npm install lodash
