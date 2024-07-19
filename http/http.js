@@ -1,31 +1,49 @@
-import { createServer } from "http"; // Import the createServer function from the http module
+import { createServer } from "http";
+import fs from 'fs';
+import path from "path";
 
-// Create and assign the server to the 'server' variable
-const server = createServer((req, res) => {
-    // Commented out JSON response example
-    // Sets the response header to indicate JSON content type and sends a JSON response
-    // res.writeHead(200, {
-    //     "Content-Type": "application/json"
-    // });
-    // res.end(JSON.stringify({
-    //     name: "Davit"
-    // }));
+const mimeTypes = {
+    ".html": "text/html",
+    ".css": "text/css",
+    ".js": "text/javascript"
+};
 
-    // Check if the request URL is '/hello'
-    if (req.url === "/hello") {
-        res.writeHead(200, { // Set response header to indicate plain text content type
-            "Content-Type": "text/plain"
-        });
-        res.end("hello"); // Send the response with the text "hello"
-    } else {
-        res.writeHead(200, { // Set response header to indicate plain text content type
-            "Content-Type": "text/plain"
-        });
-        res.end("bye"); // Send the response with the text "bye"
+function fileMiddleware(req, res, next) {
+    let url = req.url;
+    if (url === "/") {
+        url = "/http.html"
     }
+    else if (url === "/hello"){
+        url = "/hello.html"
+    }
+    else if (url === "/bye"){
+        url = "/bye.html"
+    }
+
+    const filePath = path.resolve("http" + url);
+    fs.promises.access(filePath)
+        .then(() => {
+            const ext = path.extname(filePath);
+            res.writeHead(200, { "Content-Type": mimeTypes[ext] || "text/plain" });
+            fs.createReadStream(filePath).pipe(res);
+        })
+        .catch(() => {
+            next();
+        });
+}
+
+const server = createServer((req, res) => {
+    fileMiddleware(req, res, () => {
+        if (req.url === "/hello") {
+            res.writeHead(200, { "Content-Type": "text/plain" });
+            res.end("HELLO HTTP JS");
+        } else {
+            res.writeHead(200, { "Content-Type": "text/plain" });
+            res.end("bye");
+        }
+    });
 });
 
-// Start the server and have it listen on port 4001
-server.listen(4001);
-
-console.log("Server is running on port 4001"); // Log message to indicate the server is running
+server.listen(4001, () => {
+    console.log("Server is running on port 4001");
+});

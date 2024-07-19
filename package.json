@@ -2,9 +2,9 @@
   "name": "node",
   "version": "1.0.0",
   "description": "Learning Node.Js",
-  "main": "index.js",
+  "main": "./http/http.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon ./http/http.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,8 @@
     "url": "https://github.com/David7713/Node/issues"
   },
   "type": "module",
-  "homepage": "https://github.com/David7713/Node#readme"
+  "homepage": "https://github.com/David7713/Node#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
 }
